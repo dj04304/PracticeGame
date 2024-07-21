@@ -67,7 +67,7 @@ public class PlayerController : BaseController
         _moving = false;
         _rigidbody.velocity = Vector3.zero; // 정지
 
-        if (_isInTrigger)
+        if (_croassantStack.Count > 0)
         {
             State = Define.State.StackIdle;
         }
@@ -100,15 +100,50 @@ public class PlayerController : BaseController
         if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, 1 << (int)Define.Layer.Ground))
         {
             _destPos = hitInfo.point;
-            State = Define.State.Moving;
+            if(_croassantStack.Count > 0)
+            {
+                State = Define.State.StackMoving;
+            }
+            else
+            {
+                State = Define.State.Moving;
+            }
             _moving = true;
         }
     }
 
     protected override void UpdateStackIdle()
     {
-        Debug.Log("실행");
-        // 추가적인 스택 관련 로직
+
+        
+    }
+
+    protected override void UpdateStackMoving()
+    {
+        if (_croassantStack.Count > 0)
+        {
+            if (_moving)
+            {
+                // 방향 벡터
+                Vector3 dir = _destPos - transform.position;
+                dir.y = 0;
+
+                // 도착시 IDLE
+                if (dir.magnitude < 0.1f)
+                {
+                    StopMoving();
+                }
+                else
+                {
+                    // 방향 및 속도
+                    Vector3 moveDir = dir.normalized * MoveSpeed;
+                    _rigidbody.velocity = moveDir;
+
+                    // 회전
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+                }
+            }
+        }
     }
 
     public void SetInIdleTrigger(bool inTrigger)

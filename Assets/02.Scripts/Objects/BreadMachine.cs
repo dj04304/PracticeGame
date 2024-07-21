@@ -146,6 +146,7 @@ public class BreadMachine : MonoBehaviour
 
         if (_croassantQueue.Count > 0)
         {
+            // Spawn및 스택쌓기
             GameObject obj = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.HandCroassant, "Pool/HandCroassant");
             playerController.AddToCroassantStack(obj);
 

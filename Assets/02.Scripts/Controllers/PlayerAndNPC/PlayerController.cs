@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,18 +11,26 @@ public class PlayerController : BaseController
     [SerializeField]
     private GameObject _projectilePosition;
 
+    [SerializeField]
+    private int _croassantMaxCount = 8;
+
     public Transform BreadPosition => _breadPosition.transform;
     public Transform Projectile => _projectilePosition.transform;
 
     private Rigidbody _rigidbody;
     private UI_Max _ui_Max;
 
+
     private bool _moving = false;
     private bool _isInTrigger = false;
 
+
     private Stack<GameObject> _croassantStack = new Stack<GameObject>(); // ªß Ω∫≈√
 
+    public Stack<GameObject> CroassantStack() {  return _croassantStack; }
+
     public int GetCroassantStackCount() { return _croassantStack.Count; }
+    public int CroassantMaxCount() { return _croassantMaxCount; }
 
     public override void Init()
     {
@@ -173,5 +182,10 @@ public class PlayerController : BaseController
             Vector3 positionOffset = new Vector3(0, heightIncrement * i, 0);
             croassant.transform.position = BreadPosition.position + positionOffset;
         }
+    }
+
+    public void MaxUISetActive(bool isMax)
+    {
+        _ui_Max.MaxCount(isMax);
     }
 }

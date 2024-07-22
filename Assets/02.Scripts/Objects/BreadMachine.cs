@@ -12,10 +12,10 @@ public class BreadMachine : MonoBehaviour
     private int _currentCount = 0;
 
     [SerializeField]
-    private int _maxCount = 10;
+    private int _createCount = 15;
 
-    [SerializeField]
-    private int _stackMaxCount = 8;
+    //[SerializeField]
+    //private int _stackMaxCount = 8;
 
     [SerializeField]
     private float _stackSpeed = 0.5f;
@@ -24,9 +24,10 @@ public class BreadMachine : MonoBehaviour
     private float _createSpeed = 1.5f;
 
     private Queue<GameObject> _croassantQueue = new Queue<GameObject>();
-    private GameObject _croassant;
-
-    private Collider _collider;
+    
+    GameObject _croassant;
+    PlayerController _playerController;
+    Collider _collider;
 
     #region Coroutine Valid
     private Coroutine _croassantSpawnCo;
@@ -39,6 +40,7 @@ public class BreadMachine : MonoBehaviour
 
     private void Start()
     {
+        _playerController = GameManager.Instance.Spawn.GetPlayer().GetComponent<PlayerController>();
         _collider = GetComponent<Collider>();
 
         // ObjectPooling Bread
@@ -50,7 +52,7 @@ public class BreadMachine : MonoBehaviour
 
     private IEnumerator CroassantSpawnCo()
     {
-        while (_currentCount < _maxCount)
+        while (_currentCount < _createCount)
         {
             yield return new WaitForSeconds(_createSpeed);
 
@@ -65,7 +67,7 @@ public class BreadMachine : MonoBehaviour
     {
         while (_isPlayerInRange)
         {
-            if (_currentCount < _stackMaxCount && _canCreateCroassant) // 변수 이름 변경
+            if (_currentCount < _playerController.CroassantMaxCount() && _canCreateCroassant) // 변수 이름 변경
             {
                 // Create new bread if necessary
                 if (_croassantSpawnCo == null)
@@ -74,7 +76,7 @@ public class BreadMachine : MonoBehaviour
                 }
             }
 
-            if (_croassantQueue.Count > 0 && playerController.GetCroassantStackCount() < _stackMaxCount)
+            if (_croassantQueue.Count > 0 && playerController.GetCroassantStackCount() < _playerController.CroassantMaxCount())
             {
                 ProcessBread(playerController);
             }
@@ -87,7 +89,7 @@ public class BreadMachine : MonoBehaviour
 
     private void CreateBread()
     {
-        if (_currentCount < _maxCount)
+        if (_currentCount < _createCount)
         {
             Poolable pool = GameManager.Instance.Pool.Pop(_croassant);
             _croassantQueue.Enqueue(pool.gameObject);
@@ -141,12 +143,12 @@ public class BreadMachine : MonoBehaviour
 
     private void ProcessBread(PlayerController playerController)
     {
-        if (playerController.GetCroassantStackCount() >= _stackMaxCount)
+        if (playerController.GetCroassantStackCount() >= _playerController.CroassantMaxCount())
             return;
 
         if (_croassantQueue.Count > 0)
         {
-            // Spawn및 스택쌓기
+            // Spawn 및 스택 쌓기
             GameObject obj = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.HandCroassant, "Pool/HandCroassant");
             playerController.AddToCroassantStack(obj);
 
@@ -154,25 +156,30 @@ public class BreadMachine : MonoBehaviour
             GameManager.Instance.Resource.Destroy(bread);
 
             int numberOfBreads = playerController.GetCroassantStackCount();
-            Debug.Log(numberOfBreads);
 
-            float heightIncrement = 0.3f;
+            float heightIncrement = 0.2f;
             float baseHeight = 0.3f;
             Vector3 startPosition = playerController.Projectile.position;
-            startPosition.y += baseHeight + (heightIncrement * numberOfBreads);
-
             Vector3 targetPosition = playerController.BreadPosition.position;
+
+            if(numberOfBreads > 1)
+            {
+                startPosition.y += baseHeight * numberOfBreads;
+                targetPosition.y += baseHeight *numberOfBreads;
+            }
+
+            Debug.Log(startPosition.y);
 
             CroassantProjectile projectile = obj.GetComponent<CroassantProjectile>();
 
             if (projectile != null)
             {
-                projectile.Initialize(startPosition, targetPosition);
+                projectile.Initialize(startPosition, targetPosition, playerController.BreadPosition, Define.ArriveType.BreadMachine);
             }
 
             _currentCount--;
 
-            if (_currentCount < _maxCount && !_canCreateCroassant) // 빵을 더 생성할 수 없는 상태가 아니라면
+            if (_currentCount < _createCount && !_canCreateCroassant) // 빵을 더 생성할 수 없는 상태가 아니라면
             {
                 _canCreateCroassant = true; // 빵을 생성할 수 있는 상태로 변경
                 if (_croassantSpawnCo == null)
@@ -181,5 +188,6 @@ public class BreadMachine : MonoBehaviour
                 }
             }
         }
+
     }
 }

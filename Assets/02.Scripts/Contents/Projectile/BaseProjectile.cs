@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
-public abstract class BaseProjectile : MonoBehaviour
+public class BaseProjectile : MonoBehaviour
 {
     [SerializeField]
     protected float _duration = 0.2f; // 포물선 비행 시간
@@ -12,10 +13,11 @@ public abstract class BaseProjectile : MonoBehaviour
     [SerializeField]
     protected float heightIncrement = 0.3f; // 높이 증가량
 
-    // 시작 및 타겟 지점
+    // 시작 및 타겟 지점 및 SetParent해줄 도착지점
     protected Vector3 _startPosition;
     protected Vector3 _targetPosition;
-    
+    protected Transform _arrivalTarget;
+
     //duration과의 시간 경과
     protected float _timeElapsed;
 
@@ -24,12 +26,27 @@ public abstract class BaseProjectile : MonoBehaviour
     protected GameObject _player;
     protected PlayerController _playerController;
 
-    public virtual void Initialize(Vector3 startPosition, Vector3 targetPosition)
+    protected ArriveType _arriveType;
+
+    private bool _hasArrived;
+    private bool _isMax;
+
+    // 도착 지점
+    protected virtual Transform GetArrivalTarget() { return _arrivalTarget; }
+    public bool HasArrived() { return _hasArrived; }
+
+    public virtual void Initialize(Vector3 startPosition, Vector3 targetPosition, Transform arrivalTarget, Define.ArriveType arriveType)
     {
         _startPosition = startPosition;
         _targetPosition = targetPosition;
-        _timeElapsed = 0f;
+        _arrivalTarget = arrivalTarget;
         transform.position = startPosition;
+
+        _hasArrived = false;
+        _isMax = false;
+        _timeElapsed = 0f;
+
+        _arriveType = arriveType;
 
         _player = GameManager.Instance.Spawn.GetPlayer();
         _playerController = _player.GetComponent<PlayerController>();
@@ -53,20 +70,35 @@ public abstract class BaseProjectile : MonoBehaviour
         }
         else
         {
-            Arrive();
+            Arrive(_arriveType);
+            _hasArrived = true;
         }
     }
 
-    // 도착 지점
-    protected abstract Transform GetArrivalTarget();
+    protected virtual void Arrive(ArriveType arrivalType)
+    {
+        switch (arrivalType)
+        {
+            case ArriveType.Basket:
+                    BasketArrive();
+                break;
+            case ArriveType.BreadMachine:
+                PlayerHandArrive();
+                break;
+            default:
+                DefaultArrive();
+                break;
+        }
+    }
 
-    // 도착 시의 행동
-    protected virtual void Arrive()
+    // 플레이어 손
+    private void PlayerHandArrive()
     {
         Transform arrivalTarget = GetArrivalTarget();
         if (arrivalTarget != null)
         {
             transform.SetParent(arrivalTarget);
+
             if (_croassantCount <= 0)
             {
                 transform.localPosition = Vector3.zero;
@@ -76,7 +108,30 @@ public abstract class BaseProjectile : MonoBehaviour
             {
                 transform.localPosition = new Vector3(0, heightIncrement * (_croassantCount - 1), 0);
                 transform.localRotation = Quaternion.identity;
+
+                if (_croassantCount == _playerController.CroassantMaxCount())
+                {
+                    _isMax = true;
+                    _playerController.MaxUISetActive(_isMax);
+                }
             }
+
         }
     }
+
+    // 바구니
+    private void BasketArrive()
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+    }
+
+    // 기본
+    private void DefaultArrive()
+    {
+        Debug.Log("기본 도착 처리");
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+    }
+
 }

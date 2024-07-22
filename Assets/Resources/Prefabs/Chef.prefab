@@ -742,6 +742,7 @@ MonoBehaviour:
   _state: 2
   _breadPosition: {fileID: 6729359918731028524}
   _projectilePosition: {fileID: 5448039447918990873}
+  _croassantMaxCount: 8
 --- !u!136 &8360858889671621767
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1196,7 +1197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6099557209829047231, guid: 65325a9e8914a7f499f34dee0d884c4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.030000007
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6099557209829047231, guid: 65325a9e8914a7f499f34dee0d884c4f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1220,7 +1221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6099557209829047231, guid: 65325a9e8914a7f499f34dee0d884c4f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.2
+      value: 4.49
       objectReference: {fileID: 0}
     - target: {fileID: 6099557209829047231, guid: 65325a9e8914a7f499f34dee0d884c4f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

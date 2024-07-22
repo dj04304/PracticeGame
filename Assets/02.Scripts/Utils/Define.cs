@@ -29,6 +29,13 @@ public enum Layer
         BreadMachine = 11,
     }
 
+    public enum ArriveType
+    {
+        Basket,
+        BreadMachine,
+        Default
+    }
+
     public enum Scene
     {
         Unkown,

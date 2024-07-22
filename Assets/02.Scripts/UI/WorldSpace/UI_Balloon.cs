@@ -30,7 +30,18 @@ public class UI_Balloon : UI_Base
         _pay.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        SetPos();
+    }
+
     private void Update()
+    {
+        if (gameObject.activeSelf)
+            SetPos();
+    }
+
+    private void SetPos()
     {
         Transform parent = gameObject.transform.parent;
 

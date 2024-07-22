@@ -71,7 +71,7 @@ public class NPCController : BaseController
 
                 if (closestCollider != null)
                 {
-                    Debug.Log($"Closest Collider: {closestCollider.name}"); // 디버그 로그
+                    //Debug.Log($"Closest Collider: {closestCollider.name}"); // 디버그 로그
 
                     // 가장 가까운 사물을 바라보게 함
                     Vector3 direction = (closestCollider.transform.position - transform.position).normalized;

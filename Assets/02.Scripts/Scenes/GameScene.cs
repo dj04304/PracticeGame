@@ -1,21 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[Serializable]
+public class WaypointDatas
+{
+    public Transform FirstWaypoint;
+    public List<Transform> BreadWaypoints;
+    public Transform CashTableWayPoint;
+    public Transform CashTableWayPointToSit;
+    public Transform SitTableWayPoint;
+    public Transform EntranceWayPoint;
+}
+
+
 public class GameScene : BaseScene
 {
-
-    #region AI Pos
     [SerializeField]
-    private Transform _firstWaypoint;
+    WaypointDatas waypointDatas;
 
-    [SerializeField]
-    private Transform _cashTableWayPoint;
-
-    [SerializeField]
-    private List<Transform> _breadWaypoints;
-    #endregion
-
+    [Header("Other Transform")]
     [SerializeField]
     private Transform _breadSpawnPoint;
 
@@ -23,11 +29,9 @@ public class GameScene : BaseScene
     private Transform _playerStartPoint;
 
     [SerializeField]
-    int _croassantCount = 50;
-
-    [SerializeField]
     int _npcSpawnCount = 4;
 
+    // 시작시 바로 실행
     protected override void Init()
     {
         base.Init();
@@ -36,14 +40,18 @@ public class GameScene : BaseScene
 
         GameObject player = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.Player, "Chef");
         Camera.main.gameObject.GetOrAddComponent<CameraController>().SetPalyer(player);
-
         player.gameObject.transform.position = _playerStartPoint.position;
 
         GameObject go =  new GameObject { name = "@SpawningPool" };
         NPCSpwningPool pool = go.GetOrAddComponent<NPCSpwningPool>();
 
-        pool.SetFirstWaypoint(_firstWaypoint);
-        pool.SetTargetWaypoints(_breadWaypoints);
+        GameManager.Instance.Object.ShowObj<Sit>();
+
+        //pool.SetSpawnPoint(_spawnPoint);
+        //pool.SetFirstWaypoint(_firstWaypoint);
+        //pool.SetBreadWaypoints(_breadWaypoints);
+
+        pool.SetWaypointsData(waypointDatas);
 
         // NPC 생성 Count
         pool.SetKeepNPCCount(_npcSpawnCount);

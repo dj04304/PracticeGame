@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Croassant : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
-
     [SerializeField]
     private float _speed = 3f; // 이동 속도
 
@@ -26,6 +24,8 @@ public class Croassant : MonoBehaviour
     [SerializeField]
     private float _waitTime = 1f;
 
+
+    private Rigidbody _rigidbody;
     // 상태 저장
     private bool hasAppliedForce = false;
 

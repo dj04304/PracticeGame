@@ -10,38 +10,50 @@ public class UI_Balloon : UI_Base
     {
         Pay,
         Bread,
+        Chair,
+
+    }
+
+    enum Texts
+    {
         BreadText,
     }
 
     private GameObject _pay;
     private GameObject _bread;
+    private GameObject _chair;
     private TMP_Text _breadText;
+
 
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
+        Bind<TMP_Text>(typeof(Texts));
 
         _pay = GetObject((int)GameObjects.Pay);
         _bread = GetObject((int)GameObjects.Bread);
-        _breadText = GetText((int)GameObjects.BreadText);
+        _chair = GetObject((int)GameObjects.Chair);
+        _breadText = GetText((int)Texts.BreadText);
 
         gameObject.SetActive(false);
+
         _bread.SetActive(false);
         _pay.SetActive(false);
+        _chair.SetActive(false);
     }
 
     private void OnEnable()
     {
-        SetPos();
+        SetInfo();
     }
 
     private void Update()
     {
         if (gameObject.activeSelf)
-            SetPos();
+            SetInfo();
     }
 
-    private void SetPos()
+    private void SetInfo()
     {
         Transform parent = gameObject.transform.parent;
 
@@ -50,19 +62,32 @@ public class UI_Balloon : UI_Base
     }
 
     // UI 활성화 비활성화 함수
-    public void SetUIActive(bool isActive, bool bread = false, bool pay = false)
+    public void SetUIActive( bool isActive, bool bread = false, bool pay = false, bool chair = false)
     {
         gameObject.SetActive(isActive);
 
-        if (bread && _bread != null)
+        NPCController nPCController = gameObject.transform.parent.GetComponent<NPCController>();
+
+        if (_bread != null)
         {
             _bread.SetActive(bread);
+            _breadText.text = $"{nPCController.RanCroassantMaxCount}";
         }
 
-        if (pay && _pay != null)
+        if ( _pay != null)
         {
             _pay.SetActive(pay);
         }
+
+        if(_chair != null)
+        {
+            _chair.SetActive(chair);
+        }
+    }
+
+    public void UpdateText(int requestCount)
+    {
+        _breadText.text = $"{requestCount}";
     }
 
 }

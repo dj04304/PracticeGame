@@ -8,6 +8,8 @@ public abstract class SpawningPool : MonoBehaviour
 {
     [SerializeField]
     protected int _objCount = 0;
+
+    //에약된 카운트
     protected int _reserveCount = 0;
 
     // 유지하는 npc 개체 수
@@ -19,7 +21,7 @@ public abstract class SpawningPool : MonoBehaviour
 
     // 주기적으로 나올 시간
     [SerializeField]
-    protected float _spawnTime = 5.0f;
+    protected float _spawnTime = 2.0f;
 
     void Start()
     {

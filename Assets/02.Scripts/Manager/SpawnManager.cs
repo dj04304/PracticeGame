@@ -9,11 +9,15 @@ public class SpawnManager
     //Dictionary<int, GameObject> _playerDic = new Dictionary<int, GameObject>();
     HashSet<GameObject> _npc = new HashSet<GameObject>();
     HashSet<GameObject> _handCroassant = new HashSet<GameObject>();
+    List<GameObject> _money = new List<GameObject>();
+
 
     // 구독해서 npc Spawn하는 용도
-    public Action<int> OnSpawnEvent;
+    public Action<int> OnNPCSpawnEvent;
+    public Action<int> OnMoneySpawnEvent;
 
     public GameObject GetPlayer() { return _player; }
+    public List<GameObject> GetMoney() { return _money; }
 
     // Spawn시 캐릭터의 ID, 오브젝트를 넣으면 된다.
     public GameObject Spawn(Define.ObjectsType type, string path, Transform parent = null)
@@ -24,7 +28,7 @@ public class SpawnManager
         {
             case Define.ObjectsType.NPC:
                 _npc.Add(go);
-                OnSpawnEvent?.Invoke(1);
+                OnNPCSpawnEvent?.Invoke(1);
                 break;
             case Define.ObjectsType.Player:
                 _player = go;
@@ -32,20 +36,18 @@ public class SpawnManager
             case Define.ObjectsType.HandCroassant:
                 _handCroassant.Add(go);
                 break;
+            case Define.ObjectsType.Money:
+                _money.Add(go);
+                OnMoneySpawnEvent?.Invoke(1);
+                break;
         }
 
         return go;
     }
 
+
     public Define.ObjectsType GetObjectsType(GameObject go)
     {
-        // PlayerState 냐 MonsterState따라 type을 구분할 수 있음
-        //BaseState bc = go.GetComponent<BaseState>();
-
-        //if (bc == null)
-        //    return Define.ObjectsType.Unknown;
-
-
         return Define.ObjectsType.NPC;
     }
 
@@ -61,7 +63,7 @@ public class SpawnManager
                     if (_npc.Contains(go))
                     {
                         _npc.Remove(go);
-                        OnSpawnEvent?.Invoke(-1);
+                        OnNPCSpawnEvent?.Invoke(-1);
                     }
                 }
                 break;
@@ -69,6 +71,12 @@ public class SpawnManager
                 {
                     if (_player == go)
                         _player = null;
+                }
+                break;
+            case Define.ObjectsType.Money:
+                {
+                    _money.Remove(go);
+                    OnMoneySpawnEvent?.Invoke(-1);
                 }
                 break;
         }

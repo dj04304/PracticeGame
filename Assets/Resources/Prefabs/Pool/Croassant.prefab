@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1427938231962540229}
   - component: {fileID: -8379042124821022087}
   - component: {fileID: 5577013142593207047}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Croassant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,12 +102,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1c56d864dad02448612e2d74ef5cb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  distance: 1.3
-  startPosition: {x: 0, y: 0, z: 0}
-  endPosition: {x: 0, y: 0, z: 0}
+  _speed: 3
+  _distance: 1.3
+  _startPosition: {x: 0, y: 0, z: 0}
+  _endPosition: {x: 0, y: 0, z: 0}
   _addForce: 4.5
-  waitTime: 1
+  _waitTime: 1
 --- !u!54 &1427938231962540229
 Rigidbody:
   m_ObjectHideFlags: 0

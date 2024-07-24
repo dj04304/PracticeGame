@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
@@ -7,6 +8,8 @@ using UnityEngine.Diagnostics;
 public class UIManager
 {
     public GameObject ListRoot;
+
+    private Dictionary<string, UI_Base> _uiDic = new Dictionary<string, UI_Base>();
 
     int _order = 10;
     UI_Scene _sceneUI = null;
@@ -42,7 +45,6 @@ public class UIManager
             // sort를 요청안했다 -> popup이아닌 일반 UI
             canvas.sortingOrder = 0;
         }
-
     }
 
     // name == 프리팹 이름
@@ -60,6 +62,7 @@ public class UIManager
         _sceneUI = sceneUI;
 
         go.transform.SetParent(Root.transform);
+        _uiDic[name] = sceneUI;
 
         return sceneUI;
     }
@@ -79,11 +82,37 @@ public class UIManager
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.worldCamera = Camera.main;
 
-        return go.GetOrAddComponent<T>();
+        T component = go.GetOrAddComponent<T>();
+
+        _uiDic[name] = component;
+
+        return component;
     }
+
+    public T GetUI<T>(string name = null) where T : UI_Base
+    {
+        if(name == null)
+            name = typeof(T).Name;
+
+        if (_uiDic.TryGetValue(name, out UI_Base uiBase) == false)
+            return null;
+        
+        
+        return uiBase as T;
+    }
+
 
     public void Clear()
     {
+        foreach (var ui in _uiDic.Values)
+        {
+            if (ui != null)
+            {
+                GameObject.Destroy(ui.gameObject);
+            }
+        }
+
+        _uiDic.Clear();
         _sceneUI = null;
     }
 }

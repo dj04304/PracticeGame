@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
     [SerializeField]
-    private GameObject _breadPosition;
+    private GameObject _handPos;
 
     [SerializeField]
     private GameObject _projectilePosition;
@@ -14,7 +14,7 @@ public class PlayerController : BaseController
     [SerializeField]
     private int _croassantMaxCount = 8;
 
-    public Transform BreadPosition => _breadPosition.transform;
+    public Transform HandPos => _handPos.transform;
     public Transform Projectile => _projectilePosition.transform;
 
     private Rigidbody _rigidbody;
@@ -167,22 +167,22 @@ public class PlayerController : BaseController
     public void AddToCroassantStack(GameObject croassant)
     {
         _croassantStack.Push(croassant);
-        UpdateCroassantPositions();
+        // UpdateCroassantPositions();
     }
 
-    private void UpdateCroassantPositions()
-    {
-        float heightIncrement = 0.3f;
-        int count = _croassantStack.Count;
-        float startY = BreadPosition.position.y;
+    //private void UpdateCroassantPositions()
+    //{
+        //float heightIncrement = 0.3f;
+        //int count = _croassantStack.Count;
+        //float startY = HandPos.position.y;
 
-        for (int i = 0; i < count; i++)
-        {
-            GameObject croassant = _croassantStack.ToArray()[i]; 
-            Vector3 positionOffset = new Vector3(0, heightIncrement * i, 0);
-            croassant.transform.position = BreadPosition.position + positionOffset;
-        }
-    }
+        //for (int i = 0; i < count; i++)
+        //{
+        //    GameObject croassant = _croassantStack.ToArray()[i]; 
+        //    Vector3 positionOffset = new Vector3(0, heightIncrement * i, 0);
+        //    croassant.transform.position = HandPos.position + positionOffset;
+        //}
+    //}
 
     public void MaxUISetActive(bool isMax)
     {

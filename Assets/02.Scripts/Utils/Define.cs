@@ -9,6 +9,7 @@ public class Define
         Unknown,
         Player,
         NPC,
+        Money,
         HandCroassant,
     }
     public enum State
@@ -19,21 +20,24 @@ public class Define
         StackIdle,
     }
 
-public enum Layer
+    public enum Layer
     {
         Ground = 6,
-        Player = 7,
-        NPC = 8,
-        Basket = 9, 
-        CashTable = 10,
-        BreadMachine = 11,
+        Block = 7,
+        Player = 8,
+        NPC = 9,
+        Basket = 10, 
+        CashTable = 11,
+        BreadMachine = 12,
     }
 
     public enum ArriveType
     {
-        Basket,
-        BreadMachine,
-        Default
+        NomalType,
+        StackType,
+        CashType,
+        BagType,
+
     }
 
     public enum Scene

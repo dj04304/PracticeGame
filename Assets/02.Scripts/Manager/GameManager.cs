@@ -7,6 +7,7 @@ public class GameManager : SingletonManager<GameManager>
 {
     private DataManager _data = new DataManager();
     private InputManager _input = new InputManager();
+    private ObjectManager _object = new ObjectManager();
     private PoolManager _pool;
     private ResourceManager _resource = new ResourceManager();
     private SoundManager _sound = new SoundManager();
@@ -14,9 +15,11 @@ public class GameManager : SingletonManager<GameManager>
     private SpawnManager _spawn = new SpawnManager();
     private UIManager _ui = new UIManager();
     private Util _util = new Util();
+    private GameScene _game;
 
     public DataManager Data {  get { return _data; } }
     public InputManager Input { get { return _input; } }
+    public ObjectManager Object { get { return _object; } }
     public PoolManager Pool { get { return _pool; } }
     public ResourceManager Resource { get { return _resource; } }
     public SoundManager Sound { get { return _sound; } }
@@ -24,6 +27,8 @@ public class GameManager : SingletonManager<GameManager>
     public SpawnManager Spawn { get { return _spawn; } }
     public UIManager UI { get { return _ui; } }
     public Util Util { get { return _util; } }
+    public GameScene Game { get { return _game; } }
+
 
     protected override void Awake()
     {

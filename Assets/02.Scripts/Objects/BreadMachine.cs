@@ -69,7 +69,6 @@ public class BreadMachine : MonoBehaviour
         {
             if (_currentCount < _playerController.CroassantMaxCount() && _canCreateCroassant) // 변수 이름 변경
             {
-                // Create new bread if necessary
                 if (_croassantSpawnCo == null)
                 {
                     _croassantSpawnCo = StartCoroutine(CroassantSpawnCo());
@@ -152,29 +151,27 @@ public class BreadMachine : MonoBehaviour
             GameObject obj = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.HandCroassant, "Pool/HandCroassant");
             playerController.AddToCroassantStack(obj);
 
-            GameObject bread = _croassantQueue.Dequeue();
-            GameManager.Instance.Resource.Destroy(bread);
+            GameObject croassant = _croassantQueue.Dequeue();
+            GameManager.Instance.Resource.Destroy(croassant);
 
-            int numberOfBreads = playerController.GetCroassantStackCount();
+            int numberOfCroassant = playerController.GetCroassantStackCount();
 
-            float heightIncrement = 0.2f;
+
             float baseHeight = 0.3f;
             Vector3 startPosition = playerController.Projectile.position;
-            Vector3 targetPosition = playerController.BreadPosition.position;
+            Vector3 targetPosition = playerController.HandPos.position;
 
-            if(numberOfBreads > 1)
+            if(numberOfCroassant > 1)
             {
-                startPosition.y += baseHeight * numberOfBreads;
-                targetPosition.y += baseHeight *numberOfBreads;
+                startPosition.y += baseHeight * numberOfCroassant;
+                targetPosition.y += baseHeight *numberOfCroassant;
             }
-
-            Debug.Log(startPosition.y);
 
             CroassantProjectile projectile = obj.GetComponent<CroassantProjectile>();
 
             if (projectile != null)
             {
-                projectile.Initialize(startPosition, targetPosition, playerController.BreadPosition, Define.ArriveType.BreadMachine);
+                projectile.Initialize(startPosition, targetPosition, playerController.HandPos, Define.ArriveType.StackType, numberOfCroassant);
             }
 
             _currentCount--;

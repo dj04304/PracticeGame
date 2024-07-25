@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 7212717763848493216}
   - component: {fileID: 6032399087022233349}
   - component: {fileID: 8382206385056195535}
+  - component: {fileID: -87168221819461812}
+  - component: {fileID: -774642226175894607}
+  - component: {fileID: 680289796162865323}
   m_Layer: 0
   m_Name: Money
   m_TagString: Untagged
@@ -83,3 +86,44 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-87168221819461812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8021869967813542426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1592a761d04621445a17aa34c60fefaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _price: 1
+--- !u!114 &-774642226175894607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8021869967813542426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74036b890f311243b8d6ddbb0fb0aa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsUsing: 0
+--- !u!114 &680289796162865323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8021869967813542426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5bb7a94dc73a3449b820a65a1b39756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.1
+  _height: 0.3
+  heightIncrement: 0.3

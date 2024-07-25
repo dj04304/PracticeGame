@@ -18,6 +18,8 @@ public class Basket : MonoBehaviour
     private int _npcMask = (1 << (int)Define.Layer.NPC);
 
     private bool _isProcessingBread = false;
+    private bool _isCompleteTutorial = false;
+
     private int _npcNum;
 
     private void OnTriggerEnter(Collider other)
@@ -57,14 +59,13 @@ public class Basket : MonoBehaviour
     {
         if ((1 << other.gameObject.layer & _npcMask) != 0)
         {
-            NPCController npcController = other.GetComponent<NPCController>();
 
-            if (npcController != null && !_isProcessingBread)
+            if (!_isProcessingBread)
             {
                 if (_croassantStack.Count > 0)
                 {
                     _isProcessingBread = true;
-                    StartCoroutine(ProcessBreadToNPCCo(npcController));
+                    StartCoroutine(ProcessBreadToNPCCo(other));
                 }
             }
         }
@@ -84,7 +85,7 @@ public class Basket : MonoBehaviour
     }
 
 
-    private IEnumerator ProcessBreadToNPCCo(NPCController npcController)
+    private IEnumerator ProcessBreadToNPCCo(Collider other)
     {
 
         yield return new WaitForSeconds(1);
@@ -148,7 +149,8 @@ public class Basket : MonoBehaviour
 
                 // 현재 NPC의 모든 빵을 처리한 경우
                 _npcQueue.Dequeue();
-
+                GameManager.Instance.Tutorial.HandleTriggerEnter(other, _isCompleteTutorial,  Define.NextTutorial.CashTable);
+                _isCompleteTutorial = true;
             }
 
             // NPC가 없거나 빵이 없으면 처리 중지
@@ -197,14 +199,16 @@ public class Basket : MonoBehaviour
 
             Transform targetPoint = availablePoints[i];
             Vector3 startPosition = croassant.transform.position;
-            Vector3 targetPosition = targetPoint.position;
+            Vector3 targetPosition = targetPoint.transform.position;
 
-            projectile.Initialize(startPosition, targetPosition, targetPoint, Define.ArriveType.NomalType, numberOfCroassant);
+            projectile.Initialize(startPosition, targetPosition, targetPoint, Define.ArriveType.CotainType, numberOfCroassant);
 
             // 발사가 완료될 때까지 대기
             yield return new WaitUntil(() => projectile.HasArrived());
 
             croassant.transform.SetParent(targetPoint);
+            croassant.transform.localPosition = Vector3.zero;
+            croassant.transform.localRotation = Quaternion.identity;
         }
         
 

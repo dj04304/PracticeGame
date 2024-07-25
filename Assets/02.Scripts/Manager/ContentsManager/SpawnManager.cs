@@ -9,15 +9,13 @@ public class SpawnManager
     //Dictionary<int, GameObject> _playerDic = new Dictionary<int, GameObject>();
     HashSet<GameObject> _npc = new HashSet<GameObject>();
     HashSet<GameObject> _handCroassant = new HashSet<GameObject>();
-    List<GameObject> _money = new List<GameObject>();
-
+    HashSet<GameObject> _money = new HashSet<GameObject>();
 
     // 구독해서 npc Spawn하는 용도
     public Action<int> OnNPCSpawnEvent;
     public Action<int> OnMoneySpawnEvent;
 
     public GameObject GetPlayer() { return _player; }
-    public List<GameObject> GetMoney() { return _money; }
 
     // Spawn시 캐릭터의 ID, 오브젝트를 넣으면 된다.
     public GameObject Spawn(Define.ObjectsType type, string path, Transform parent = null)
@@ -36,9 +34,9 @@ public class SpawnManager
             case Define.ObjectsType.HandCroassant:
                 _handCroassant.Add(go);
                 break;
-            case Define.ObjectsType.Money:
-                _money.Add(go);
+            case Define.ObjectsType.ProjectileMoney:
                 OnMoneySpawnEvent?.Invoke(1);
+                _money.Add(go);
                 break;
         }
 

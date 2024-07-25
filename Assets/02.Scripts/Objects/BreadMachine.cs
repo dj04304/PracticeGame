@@ -26,6 +26,7 @@ public class BreadMachine : MonoBehaviour
     private Queue<GameObject> _croassantQueue = new Queue<GameObject>();
     
     GameObject _croassant;
+    
     PlayerController _playerController;
     Collider _collider;
 
@@ -36,6 +37,7 @@ public class BreadMachine : MonoBehaviour
 
     private int _mask = (1 << (int)Define.Layer.Player);
     private bool _isPlayerInRange = false;
+    private bool _isCompleteTutorial = false;
     private bool _canCreateCroassant = true; // 초기 값을 true로 설정하여 시작 시 빵을 생성할 수 있게 설정
 
     private void Start()
@@ -48,6 +50,13 @@ public class BreadMachine : MonoBehaviour
         GameManager.Instance.Resource.Destroy(_croassant);
 
         _croassantSpawnCo = StartCoroutine(CroassantSpawnCo());
+
+        // Particle
+        Vector3 smokePos = new Vector3(0, 2.7f, 0);
+        GameManager.Instance.Particle.Play("VFX_Smoke", gameObject.transform, smokePos, Define.Particle.Loop);
+
+        Vector3 LightPos = new Vector3(0.2f, 1.9f, -0.527f);
+        GameManager.Instance.Particle.Play("VFX_OvenLight", gameObject.transform, LightPos, Define.Particle.Loop);
     }
 
     private IEnumerator CroassantSpawnCo()
@@ -105,6 +114,8 @@ public class BreadMachine : MonoBehaviour
     {
         if ((1 << other.gameObject.layer & _mask) != 0)
         {
+            GameManager.Instance.Tutorial.HandleTriggerEnter(other, _isCompleteTutorial, Define.NextTutorial.Basket);
+            _isCompleteTutorial = true;
             if (!_isPlayerInRange)
             {
                 _isPlayerInRange = true;

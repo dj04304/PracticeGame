@@ -7,23 +7,26 @@ public class TriggerHandler : MonoBehaviour
 
     private int _playerMask = (1 << (int)Define.Layer.Player);
     private int _npcMask = (1 << (int)Define.Layer.NPC);
+    private int _moneyMask = (1 << (int)Define.Layer.Money);
 
     public void Init(CashTable cashTable)
     {
         _cashTable = cashTable;
     }
 
-    private void HandleTrigger(Collider other, Action<Collider> playerAction, Action<Collider> npcAction)
+    private void HandleTrigger(
+        Collider other,
+        Action<Collider> playerAction, 
+        Action<Collider> npcAction
+        )
     {
         int layer = 1 << other.gameObject.layer;
-        if ((_playerMask & layer) != 0)
-        {
-            playerAction(other);
-        }
-        else if ((_npcMask & layer) != 0)
-        {
-            npcAction(other);
-        }
+
+       
+            if ((_playerMask & layer) != 0)
+                playerAction(other);
+            else if ((_npcMask & layer) != 0)
+                npcAction(other);
     }
 
     private void OnTriggerEnter(Collider other)

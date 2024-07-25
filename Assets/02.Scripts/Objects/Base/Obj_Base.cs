@@ -44,5 +44,5 @@ public abstract class Obj_Base : MonoBehaviour
         return objects[idx] as T;
     }
 
-    protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
+    public GameObject GetObject(int idx) { return Get<GameObject>(idx); }
 }

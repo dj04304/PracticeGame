@@ -77,6 +77,9 @@ public abstract class BaseController : MonoBehaviour
             case Define.State.StackMoving:
                 UpdateStackMoving();
                 break;
+            case Define.State.Sitting:
+                UpdateSitting();
+                break;
         }
 
     }
@@ -87,5 +90,6 @@ public abstract class BaseController : MonoBehaviour
     protected virtual void UpdateMoving() { }
     protected virtual void UpdateStackIdle() { }
     protected virtual void UpdateStackMoving() { }
+    protected virtual void UpdateSitting() { }
 
 }

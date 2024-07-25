@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
     [SerializeField]
+    private Vector3 _uiScale = new Vector3(0.02f, 0.02f, 0.02f);
+
+    [SerializeField]
     private GameObject _handPos;
 
     [SerializeField]
@@ -43,7 +46,7 @@ public class PlayerController : BaseController
 
         _rigidbody = GetComponent<Rigidbody>();
 
-        _ui_Max = GameManager.Instance.UI.MakeWorldSpaceUI<UI_Max>(transform);
+        _ui_Max = GameManager.Instance.UI.MakeWorldSpaceUI<UI_Max>(transform, null, null, _uiScale);
     }
 
     protected override void UpdateMoving()

@@ -16,10 +16,4 @@ public class PaperBagProjectile : BaseProjectile
     {
         base.Arrive(arriveType);
     }
-
-    // ¡æ¿ÃπÈ
-    protected override void Update()
-    {
-        base.Update();
-    }
 }

@@ -28,17 +28,20 @@ public class SoundManager
         }
     }
 
+    // path
     public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
     {
         AudioClip audioClip = GetOrAddAudioClip(path, type);
         Play(audioClip, type, pitch);
     }
 
+   
+    // audioClip
     public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
     {
         if (audioClip == null)
             return;
-
+        //GameManager.Instance.Sound.Play("Get_Obj");
         if (type == Define.Sound.Bgm)
         {
             AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];

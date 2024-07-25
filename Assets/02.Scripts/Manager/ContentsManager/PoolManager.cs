@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class PoolManager : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class PoolManager : MonoBehaviour
         public GameObject Original { get; private set; }
         public Transform Root { get; set; }
 
-        Queue<Poolable> _poolQueue = new Queue<Poolable>();
+        Stack<Poolable> _poolStack = new Stack<Poolable>();
 
         public void Init(GameObject original, int count = 50)
         {
@@ -42,15 +40,15 @@ public class PoolManager : MonoBehaviour
             poolable.gameObject.SetActive(false);
             poolable.IsUsing = false;
 
-            _poolQueue.Enqueue(poolable);
+            _poolStack.Push(poolable);
         }
 
         public Poolable Pop(Transform parent)
         {
             Poolable poolable;
 
-            if (_poolQueue.Count > 0)
-                poolable = _poolQueue.Dequeue();
+            if (_poolStack.Count > 0)
+                poolable = _poolStack.Pop();
             else
                 poolable = Create();
 
@@ -78,7 +76,7 @@ public class PoolManager : MonoBehaviour
         Pool pool = new Pool();
         pool.Init(original, count);
 
-        if(spawnPos != null)
+        if (spawnPos != null)
         {
             pool.Root.parent = spawnPos;
             pool.Root.position = spawnPos.position;
@@ -92,7 +90,7 @@ public class PoolManager : MonoBehaviour
     public void Push(Poolable poolable)
     {
         string name = poolable.gameObject.name;
-        if(_pool.ContainsKey(name) == false)
+        if (_pool.ContainsKey(name) == false)
         {
             GameObject.Destroy(poolable.gameObject);
             return;
@@ -106,7 +104,6 @@ public class PoolManager : MonoBehaviour
         if (_pool.ContainsKey(original.name) == false)
             CreatePool(original, spawnPos, count);
 
-
         return _pool[original.name].Pop(parent);
     }
 
@@ -117,6 +114,4 @@ public class PoolManager : MonoBehaviour
 
         return _pool[name].Original;
     }
-
-
 }

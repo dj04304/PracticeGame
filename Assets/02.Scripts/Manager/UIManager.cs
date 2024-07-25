@@ -68,7 +68,12 @@ public class UIManager
     }
 
     // WorldSpace용 UI (ex 말풍선 등)
-    public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
+    public T MakeWorldSpaceUI<T>(Transform parent = null,
+        Vector3? position = null,
+        Quaternion? rotation = null,
+        Vector3? scale = null,
+        string name = null
+        ) where T : UI_Base
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
@@ -77,6 +82,26 @@ public class UIManager
 
         if (parent != null)
             go.transform.SetParent(parent);
+
+        // 위치
+        if (position.HasValue)
+            go.transform.position = position.Value;
+        else
+            go.transform.position = Vector3.zero; // 기본 위치
+
+
+        // 회전
+        if (rotation.HasValue)
+            go.transform.rotation = rotation.Value;
+        else
+            go.transform.rotation = Quaternion.identity; // 기본 회전
+        
+
+        // 스케일 설정
+        if (scale.HasValue)
+            go.transform.localScale = scale.Value;
+        else
+            go.transform.localScale = Vector3.one; // 기본 스케일
 
         Canvas canvas = go.GetOrAddComponent<Canvas>();
         canvas.renderMode = RenderMode.WorldSpace;

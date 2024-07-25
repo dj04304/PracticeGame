@@ -5,7 +5,7 @@ using static Define;
 
 public class CroassantProjectile : BaseProjectile
 {
-    public override void Initialize(Vector3 startPosition, Vector3 targetPosition, Transform arrivalTarget, Define.ArriveType arriveType, int stackCount, float duration = 0.1f)
+    public override void Initialize(Vector3 startPosition, Vector3 targetPosition, Transform arrivalTarget, Define.ArriveType arriveType, int stackCount = 0, float duration = 0.1f)
     {
         base.Initialize(startPosition, targetPosition, arrivalTarget, arriveType, stackCount, duration);
     }
@@ -15,11 +15,5 @@ public class CroassantProjectile : BaseProjectile
     protected override void Arrive(ArriveType arriveType)
     {
         base.Arrive(arriveType);
-    }
-
-    // 크로아상 발사
-    protected override void Update()
-    {
-       base.Update();
     }
 }

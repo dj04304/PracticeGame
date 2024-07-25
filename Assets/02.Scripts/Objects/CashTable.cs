@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CashTable : Obj_Base
 {
-    enum GameObjects
+    public enum GameObjects
     {
         PlayerTrigger,
         NPCTrigger,
@@ -19,18 +20,24 @@ public class CashTable : Obj_Base
     private GameObject _moneyStorage;
 
     private GameObject _paperBag;
+    private GameObject _money;
     private bool _isPlayerInArea = false;
+    private bool _isCompleteTutorial = false;
     private int _price;
 
     private NPCController _currentNPC;
     private Animator _anim;
 
     GameObject _player;
+    BaseStackMoney _moneyStorageObj;
     PlayerInfo _playerInfo;
-    MoneySpawningPool _moneyPool;
+
+    public GameObject GetMoney { get { return _money; }}
 
     public override void Init()
     {
+        _moneyStorageObj = gameObject.GetOrAddComponent<BaseStackMoney>();
+
         Bind<GameObject>(typeof(GameObjects));
 
         _playerTrigger = GetObject((int)GameObjects.PlayerTrigger);
@@ -43,11 +50,16 @@ public class CashTable : Obj_Base
         TriggerHandler npcTriggerHandler = _nPCTrigger.GetOrAddComponent<TriggerHandler>();
         npcTriggerHandler.Init(this);
 
+        MoneyTriggerHandler moneyTriggerHandler = _moneyStorage.GetOrAddComponent<MoneyTriggerHandler>();
+        moneyTriggerHandler.Init(this);
+
         _player = GameManager.Instance.Spawn.GetPlayer();
         _playerInfo = _player.GetComponent<PlayerInfo>();
 
-        _moneyPool = gameObject.GetOrAddComponent<MoneySpawningPool>();
-        _moneyPool.SetParentTransform(_moneyStorage.transform);
+        // ObjectPooling cash
+        _money = GameManager.Instance.Resource.Instantiate("Pool/Money", null, transform, 50);
+        GameManager.Instance.Resource.Destroy(_money);
+
     }
 
     public void OnPlayerEnter(Collider other)
@@ -62,12 +74,10 @@ public class CashTable : Obj_Base
 
     public void OnPlayerStay(Collider other)
     {
-        Debug.Log("PlayerStay");
     }
 
     public void OnPlayerExit(Collider other)
     {
-        Debug.Log("PlayerExit");
         _isPlayerInArea = false;
     }
 
@@ -85,17 +95,28 @@ public class CashTable : Obj_Base
 
     public void OnNPCStay(Collider other)
     {
-        Debug.Log("NPCStay");
     }
 
     public void OnNPCExit(Collider other)
     {
-        Debug.Log("NPCExit");
         NPCController npc = other.GetComponent<NPCController>();
         npc.AdjustNPCPositions();
-        // µ·°è»ê
-        _moneyPool.SetKeepMoneyCount(_price);
 
+        // µ·°è»ê
+        _moneyStorageObj.SetKeepMoneyCount(_price);
+        _moneyStorageObj.SetParentTransform(_moneyStorage.transform);
+
+        if(npc.GetCroassantStackCount() <= 0)
+        {
+            Vector3 npcHead = new Vector3(0, 2.0f, 0);
+
+            GameManager.Instance.Sound.Play("cash");
+            GameManager.Instance.Particle.Play("VFX_EmojiSmile", npc.transform, npcHead);
+            Debug.Log(npcHead);
+        }
+
+        GameManager.Instance.Tutorial.HandleTriggerEnter(other, _isCompleteTutorial, Define.NextTutorial.CashPoint);
+        _isCompleteTutorial = true;
     }
 
     private IEnumerator CreatePaperBagAndProcessNPC()
@@ -137,7 +158,7 @@ public class CashTable : Obj_Base
             }
 
             CroassantProjectile projectile = croassant.GetComponent<CroassantProjectile>();
-            HandCroassant handCroassant = croassant.GetComponent<HandCroassant>();
+            HandCroassantInfo handCroassant = croassant.GetComponent<HandCroassantInfo>();
 
             int numberOfCroassant = _currentNPC.GetCroassantStackCount();
 
@@ -147,7 +168,7 @@ public class CashTable : Obj_Base
 
             yield return new WaitUntil(() => _anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f);
 
-            projectile.Initialize(startPosition, targetPosition, _paperBag.transform, Define.ArriveType.CashType, numberOfCroassant, duration);
+            projectile.Initialize(startPosition, targetPosition, _paperBag.transform, Define.ArriveType.NomalType, numberOfCroassant, duration);
 
             yield return new WaitUntil(() => projectile.HasArrived());
 

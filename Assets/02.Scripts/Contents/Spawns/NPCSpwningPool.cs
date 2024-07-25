@@ -6,9 +6,6 @@ public class NPCSpwningPool : SpawningPool
 {
     private WaypointDatas _waypointDatas;
 
-    [SerializeField]
-    int _minCount = 1;
-
     private Queue<Transform> _breadWaypointQueue;
 
     // NPC 수를 이벤트로 받아서 더해주는 용도
@@ -48,7 +45,7 @@ public class NPCSpwningPool : SpawningPool
         _reserveCount++;
 
         yield return new WaitForSeconds(Random.Range(0, _spawnTime));
-        
+
         //int setCroassantCount = UnityEngine.Random.Range(_minCount, _maxCount);
         GameObject obj = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.NPC, "NPC");
         NPCController npc = obj.GetComponent<NPCController>();

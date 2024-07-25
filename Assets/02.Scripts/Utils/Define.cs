@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Define
 {
     public enum ObjectsType
@@ -11,13 +7,32 @@ public class Define
         NPC,
         Money,
         HandCroassant,
+        ProjectileMoney,
     }
+
+    public enum BuildObjectType
+    {
+        Sit,
+        LockPlane,
+    }
+
+    public enum NextTutorial
+    {
+        Oven,
+        Basket,
+        CashTable,
+        CashPoint,
+        Trash,
+        Unlock
+    }
+
     public enum State
     {
         Moving,
         Idle,
         StackMoving,
         StackIdle,
+        Sitting,
     }
 
     public enum Layer
@@ -29,15 +44,16 @@ public class Define
         Basket = 10, 
         CashTable = 11,
         BreadMachine = 12,
+        Money = 13,
     }
 
     public enum ArriveType
     {
-        NomalType,
+        CotainType,
         StackType,
         CashType,
         BagType,
-
+        NomalType,
     }
 
     public enum Scene
@@ -51,6 +67,13 @@ public class Define
     public enum Sound
     {
         Bgm,
+        Effect,
+        MaxCount,
+    }
+
+    public enum Particle
+    {
+        Loop,
         Effect,
         MaxCount,
     }

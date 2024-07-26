@@ -13,7 +13,7 @@ public abstract class BaseStackMoney : MonoBehaviour
     protected float _initX = -1.75f;
     protected float _xSpacing = 0.75f;
     protected float _ySpacing = 0.2f;
-    protected float _zSpacing = 0.5f; // zSpacing을 양수로 수정
+    protected float _zSpacing = 0.5f;
 
     private bool _isSpawning = false; // 중복 생성 방지용 플래그
 

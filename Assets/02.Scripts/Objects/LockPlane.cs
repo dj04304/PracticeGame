@@ -95,8 +95,14 @@ public class LockPlane : LockObj_Base
         Vector3 nextScale = SetNextLockScale();
 
         UI_Price uiPrice = GameManager.Instance.UI.MakeWorldSpaceUI<UI_Price>(null, nextPosition, nextRotation, nextScale);
-        GameManager.Instance.Tutorial.AddUnlockPoint(uiPrice.transform);
+        TutorialManager tutorial = GameManager.Instance.Tutorial;
+
+        tutorial.AddUnlockPoint(uiPrice.transform);
+        tutorial.AddUplockDicPoint(uiPrice.transform);
         _isCompleteTutorial = true;
+        tutorial.SetGuideArrowActive(false);
+        
+
     }
 
 

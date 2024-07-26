@@ -7,7 +7,6 @@ public class TriggerHandler : MonoBehaviour
 
     private int _playerMask = (1 << (int)Define.Layer.Player);
     private int _npcMask = (1 << (int)Define.Layer.NPC);
-    private int _moneyMask = (1 << (int)Define.Layer.Money);
 
     public void Init(CashTable cashTable)
     {

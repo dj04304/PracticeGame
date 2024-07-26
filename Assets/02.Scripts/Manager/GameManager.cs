@@ -11,9 +11,9 @@ public class GameManager : SingletonManager<GameManager>
     private SoundManager _sound = new SoundManager();
     private SceneManagerEx _scene = new SceneManagerEx();
     private SpawnManager _spawn = new SpawnManager();
-    private TutorialManager _tutorial = new TutorialManager();
     private UIManager _ui = new UIManager();
     private Util _util = new Util();
+    private TutorialManager _tutorial = new TutorialManager();
     private GameScene _game;
 
     public DataManager Data {  get { return _data; } }
@@ -26,10 +26,9 @@ public class GameManager : SingletonManager<GameManager>
     public SceneManagerEx Scene { get { return _scene; } }
     public SpawnManager Spawn { get { return _spawn; } }
     public UIManager UI { get { return _ui; } }
-    public TutorialManager Tutorial { get { return _tutorial; } }
     public Util Util { get { return _util; } }
+    public TutorialManager Tutorial { get { return _tutorial; } }
     public GameScene Game { get { return _game; } }
-
 
     protected override void Awake()
     {
@@ -59,7 +58,6 @@ public class GameManager : SingletonManager<GameManager>
             manager = managerObject.AddComponent<T>();
         }
     }
-
 
     void Update()
     {

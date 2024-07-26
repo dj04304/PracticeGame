@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Table
   - Trash
+  - Arrow
   layers:
   - Default
   - TransparentFX

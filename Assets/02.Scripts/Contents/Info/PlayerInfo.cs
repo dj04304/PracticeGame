@@ -14,12 +14,19 @@ public class PlayerInfo : MonoBehaviour
     public int Money
     {
         get { return _money; }
-        set { _money = value; }
+        set 
+        {
+            _money = value;
+            OnMoneyUpdate.Invoke(_money);
+        }
     }
+
+    public Action<int> OnMoneyUpdate;
 
     public void OnIncome(int price)
     {
         Money += price;
+        
     }
 
     public int InitMoney

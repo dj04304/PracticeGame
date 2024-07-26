@@ -121,7 +121,6 @@ public class Sit : Obj_Base
 
                 if (closestTable != null)
                 {
-                    Debug.Log("가장 가까운 테이블 찾음");
 
                     if(npc.GetCroassantStackCount() > 0)
                     {

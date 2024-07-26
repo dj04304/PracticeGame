@@ -12,10 +12,14 @@ public class PlayerController : BaseController
     private GameObject _handPos;
 
     [SerializeField]
+    private GameObject _footArrow;
+
+    [SerializeField]
     private GameObject _projectilePosition;
 
     [SerializeField]
     private int _croassantMaxCount = 8;
+
 
     public Transform HandPos => _handPos.transform;
     public Transform Projectile => _projectilePosition.transform;
@@ -24,9 +28,9 @@ public class PlayerController : BaseController
     private UI_Max _ui_Max;
 
 
+    private bool _isCompleteTutorial = false;
     private bool _moving = false;
     private bool _isInTrigger = false;
-
 
     private Stack<GameObject> _croassantStack = new Stack<GameObject>(); // ªß Ω∫≈√
 
@@ -53,6 +57,13 @@ public class PlayerController : BaseController
     {
         if (_moving)
         {
+            if(!_isCompleteTutorial)
+            {
+                Collider collider = GetComponent<Collider>();
+                GameManager.Instance.Tutorial.HandleTriggerEnter(collider, _isCompleteTutorial, Define.NextTutorial.Oven);
+                _isCompleteTutorial = true;
+            }
+
             // πÊ«‚ ∫§≈Õ
             Vector3 dir = _destPos - transform.position;
             dir.y = 0;
@@ -122,12 +133,6 @@ public class PlayerController : BaseController
             }
             _moving = true;
         }
-    }
-
-    protected override void UpdateStackIdle()
-    {
-
-        
     }
 
     protected override void UpdateStackMoving()

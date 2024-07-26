@@ -216,7 +216,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.15, z: 5}
+  m_Size: {x: 1.86, y: 1.15, z: 3.96}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3561294513907302908
 GameObject:
@@ -360,7 +360,6 @@ GameObject:
   - component: {fileID: 6340760858659712627}
   - component: {fileID: 6335071543523226419}
   - component: {fileID: 6705740874353162217}
-  - component: {fileID: 2209620510328079086}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -433,20 +432,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2209620510328079086
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3913225087171900629}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &4877452145271680935
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +515,65 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5565601615694077667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8564971531136301914}
+  - component: {fileID: 3747331899531205713}
+  - component: {fileID: 3994270279872046661}
+  m_Layer: 0
+  m_Name: MoneyStorageCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8564971531136301914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5565601615694077667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4917128893890054835}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3747331899531205713
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5565601615694077667}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.17, y: 1.94, z: 1.87}
+  m_Center: {x: -1.01, y: 0.78, z: 0}
+--- !u!114 &3994270279872046661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5565601615694077667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ebdefe8c369b3f42a964725916d9b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoneyList: []
 --- !u!1 &5732244884374492107
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,9 +666,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4917128893890054835}
-  - component: {fileID: 4191348461767559457}
   - component: {fileID: 7661183239262146246}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: MoneyStorage
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -639,26 +682,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6712280508538822343}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.498, y: 0, z: 0.36}
+  m_LocalPosition: {x: -1.69, y: 0, z: 1.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8564971531136301914}
   m_Father: {fileID: 6278893683193475612}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4191348461767559457
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6712280508538822343}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.17, y: 2, z: 1.87}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &7661183239262146246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -881,6 +912,10 @@ PrefabInstance:
     - target: {fileID: 1243958911616451332, guid: 5fb23f8d5d9ea6c479bdfe4765f1cfa5, type: 3}
       propertyPath: m_Name
       value: UI_Price
+      objectReference: {fileID: 0}
+    - target: {fileID: 1243958911616451353, guid: 5fb23f8d5d9ea6c479bdfe4765f1cfa5, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1243958911616451355, guid: 5fb23f8d5d9ea6c479bdfe4765f1cfa5, type: 3}
       propertyPath: m_Pivot.x

@@ -8,6 +8,9 @@ public class NPCSpwningPool : SpawningPool
 
     private Queue<Transform> _breadWaypointQueue;
 
+    // 첫번째 npc만 1 값을 줌
+    private bool _isFirstOne = false;
+
     // NPC 수를 이벤트로 받아서 더해주는 용도
     public void AddNPCCounter(int value) { _objCount += value; }
     // NPC 를 유지하는 최대 수
@@ -40,6 +43,7 @@ public class NPCSpwningPool : SpawningPool
     }
 
 
+    // npc 시간차 생성
     IEnumerator ReserveSpawnCo()
     {
         _reserveCount++;
@@ -54,9 +58,10 @@ public class NPCSpwningPool : SpawningPool
 
         while (true)
         {
-            if (_reserveCount == 1)
+            if (!_isFirstOne)
             {
                 setCroassantCount = 1;
+                _isFirstOne = true;
             }
             else
             {

@@ -45,26 +45,40 @@ public class GameScene : BaseScene
 
     public GameObject SpawnRoot;
 
+    [SerializeField]
+    private GameObject _player;
+
+    public GameObject Player
+    {
+        get { return _player; }
+        set {  _player = value; }
+    }
+
     // 시작시 바로 실행
     protected override void Init()
     {
         base.Init();
 
-        SceneType = Define.Scene.Game; 
-
-        GameObject player = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.Player, "Chef");
+        SceneType = Define.Scene.Game;
+       
+        GameObject player = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.Player, "Player");
         Camera.main.gameObject.GetOrAddComponent<CameraController>().SetPalyer(player);
         player.gameObject.transform.position = _playerStartPoint.position;
+
+        Player = player;
 
         SpawnRoot =  new GameObject { name = "@SpawningPool" };
         NPCSpwningPool pool = SpawnRoot.GetOrAddComponent<NPCSpwningPool>();
 
-        GameManager.Instance.Tutorial.SetTutorialPoint(tutorailPointDatas);
-
+        //Obj, UI Instance
         GameManager.Instance.Object.ShowObj<Sit>();
         GameManager.Instance.Object.ShowObj<LockPlane>();
+        GameManager.Instance.UI.ShowSceneUI<UI_Money>();
 
         pool.SetWaypointsData(waypointDatas);
+
+        GameManager.Instance.Tutorial.SetTutorialPoint(tutorailPointDatas);
+        GameManager.Instance.Tutorial.SetPlayer(player);
 
         // NPC 생성 Count
         pool.SetKeepNPCCount(_npcSpawnCount);

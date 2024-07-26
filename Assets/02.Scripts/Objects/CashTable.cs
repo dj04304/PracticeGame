@@ -28,6 +28,8 @@ public class CashTable : Obj_Base
     private NPCController _currentNPC;
     private Animator _anim;
 
+    private Queue<NPCController> _npcQueue = new Queue<NPCController>();
+
     GameObject _player;
     BaseStackMoney _moneyStorageObj;
     PlayerInfo _playerInfo;
@@ -83,15 +85,16 @@ public class CashTable : Obj_Base
 
     public void OnNPCEnter(Collider other)
     {
-        if (_currentNPC == null)
+        NPCController newNPC = other.GetComponent<NPCController>();
+
+        if (newNPC != null && !_npcQueue.Contains(newNPC))
         {
-            _currentNPC = other.GetComponent<NPCController>();
-            if (_isPlayerInArea && _paperBag == null)
-            {
-                StartCoroutine(CreatePaperBagAndProcessNPC());
-            }
+            _npcQueue.Enqueue(newNPC);
         }
+
+        ProcessNextNPC();
     }
+
 
     public void OnNPCStay(Collider other)
     {
@@ -112,11 +115,34 @@ public class CashTable : Obj_Base
 
             GameManager.Instance.Sound.Play("cash");
             GameManager.Instance.Particle.Play("VFX_EmojiSmile", npc.transform, npcHead);
-            Debug.Log(npcHead);
         }
 
         GameManager.Instance.Tutorial.HandleTriggerEnter(other, _isCompleteTutorial, Define.NextTutorial.CashPoint);
         _isCompleteTutorial = true;
+    }
+
+    // 재귀
+    private void ProcessNextNPC()
+    {
+        if (_currentNPC == null && _npcQueue.Count > 0)
+        {
+            NPCController nextNPC = _npcQueue.Dequeue();
+
+            if (nextNPC.GetCroassantStackCount() > 0 && nextNPC.GetCroassantStackCount() % 2 == 0)
+            {
+                _currentNPC = nextNPC;
+
+                if (_isPlayerInArea && _paperBag == null)
+                {
+                    StartCoroutine(CreatePaperBagAndProcessNPC());
+                }
+            }
+            else
+            {
+                // 다시 큐를 처리하여 다음 NPC를 찾음
+                ProcessNextNPC();
+            }
+        }
     }
 
     private IEnumerator CreatePaperBagAndProcessNPC()

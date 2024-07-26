@@ -314,7 +314,8 @@ public class NPCController : BaseController
             GameManager.Instance.Spawn.Despawn(_sit.GetCroassnat());
 
             // 튜토리얼
-            GameManager.Instance.Tutorial.HandleTriggerEnter(collider, _isCompleteTutorial, Define.NextTutorial.Trash);
+            GameManager.Instance.Tutorial.SetGuideArrowActive(true);
+            GameManager.Instance.Tutorial.HandleTriggerEnter(collider, _isCompleteTutorial, Define.NextTutorial.Unlock);
             _isCompleteTutorial = true;
 
             anim.SetBool("IsSitting", false);

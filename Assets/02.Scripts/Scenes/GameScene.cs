@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,10 +44,14 @@ public class GameScene : BaseScene
     [SerializeField]
     int _npcSpawnCount = 3;
 
+    [SerializeField]
     public GameObject SpawnRoot;
 
     [SerializeField]
     private GameObject _player;
+
+    [SerializeField]
+    private CameraController _cinemachineController;
 
     public GameObject Player
     {
@@ -62,7 +67,8 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.Game;
        
         GameObject player = GameManager.Instance.Spawn.Spawn(Define.ObjectsType.Player, "Player");
-        Camera.main.gameObject.GetOrAddComponent<CameraController>().SetPalyer(player);
+        //Camera.main.gameObject.GetOrAddComponent<CameraController>().SetPalyer(player);
+      
         player.gameObject.transform.position = _playerStartPoint.position;
 
         Player = player;
@@ -80,6 +86,7 @@ public class GameScene : BaseScene
         GameManager.Instance.Tutorial.SetTutorialPoint(tutorailPointDatas);
         GameManager.Instance.Tutorial.SetPlayer(player);
 
+        _cinemachineController.SetPlayer(player);
         // NPC »ý¼º Count
         pool.SetKeepNPCCount(_npcSpawnCount);
 

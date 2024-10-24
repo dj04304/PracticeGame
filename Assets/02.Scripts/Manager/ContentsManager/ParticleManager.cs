@@ -33,10 +33,6 @@ public class ParticleManager : MonoBehaviour
                 StartCoroutine(CleanupParticleAfterDelay(particleInstance, totalDuration));
             }
         }
-        else
-        {
-            Debug.LogError("Failed to instantiate particle prefab from path: " + path);
-        }
     }
 
     private IEnumerator CleanupParticleAfterDelay(GameObject particleInstance, float delay)
@@ -57,14 +53,7 @@ public class ParticleManager : MonoBehaviour
             {
                 particleSystem.Clear();
             }
-            else
-            {
-                Debug.LogError("No ParticleSystem component found on the particle instance.");
-            }
-        }
-        else
-        {
-            Debug.LogError("Particle instance is null.");
+           
         }
     }
 }

@@ -15,6 +15,12 @@ public class Define
         Sit,
         LockPlane,
     }
+    public enum Cameras
+    {
+        Cam_MainCam,
+        Cam_UnLockSit,
+        Cam_UnlockUI,
+    }
 
     public enum NextTutorial
     {
@@ -88,7 +94,8 @@ public class Define
         Press,
         PointerDown,
         PointerUp,
-        Click,
+        Touch,
+        TouchEnd,
         Drag,
         DragEnd,
     }

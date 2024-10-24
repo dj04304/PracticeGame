@@ -14,8 +14,6 @@ public class LockPlane : LockObj_Base
         Price,
     }
 
-    private GameObject _uiLock;
-    private GameObject _uiPrice;
     private TMP_Text _priceText;
 
     [SerializeField] private int _priceValue = 14;
@@ -32,8 +30,6 @@ public class LockPlane : LockObj_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
-        _uiLock = GetObject((int)GameObjects.UI_Lock);
-        _uiPrice = GetObject((int)GameObjects.UI_Price);
         _priceText = GetObject((int)GameObjects.Price)?.GetComponent<TMP_Text>();
 
         if (_priceText != null)

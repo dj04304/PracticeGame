@@ -1,7 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class PlayerController : BaseController
 {
@@ -19,6 +20,12 @@ public class PlayerController : BaseController
 
     [SerializeField]
     private int _croassantMaxCount = 8;
+
+    [SerializeField]
+    private VariableJoystick joy;
+
+    [SerializeField]
+    private GameObject joystickUI;
 
 
     public Transform HandPos => _handPos.transform;
@@ -45,46 +52,122 @@ public class PlayerController : BaseController
         State = Define.State.Idle;
         MoveSpeed = 5.0f;
 
-        GameManager.Instance.Input.TouchAction -= OnTouchEvent;
-        GameManager.Instance.Input.TouchAction += OnTouchEvent;
+        joystickUI = GameManager.Instance.Resource.Instantiate("Joystick");
+
+        GameObject joystickChild = Util.FindChild(joystickUI);
+        joy = joystickChild.GetComponent<VariableJoystick>();
+
+        UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(joystickUI);
+
+
+        if (evt != null)
+        {
+            evt.OnClickHandler += OnJoystickClick;
+        }
+
+        joystickUI.SetActive(false);
+
+        //GameManager.Instance.Input.TouchAction -= OnTouchEvent;
+        //GameManager.Instance.Input.TouchAction += OnTouchEvent;
 
         _rigidbody = GetComponent<Rigidbody>();
 
         _ui_Max = GameManager.Instance.UI.MakeWorldSpaceUI<UI_Max>(transform, null, null, _uiScale);
+        
     }
 
-    protected override void UpdateMoving()
+    private void OnJoystickClick(PointerEventData data)
     {
-        if (_moving)
+        joystickUI.SetActive(true);
+        joystickUI.transform.position = data.position;
+    }
+
+
+    private void FixedUpdate()
+    {
+        if (!_isCompleteTutorial)
         {
-            if(!_isCompleteTutorial)
-            {
-                Collider collider = GetComponent<Collider>();
-                GameManager.Instance.Tutorial.HandleTriggerEnter(collider, _isCompleteTutorial, Define.NextTutorial.Oven);
-                _isCompleteTutorial = true;
-            }
+            Collider collider = GetComponent<Collider>();
+            GameManager.Instance.Tutorial.HandleTriggerEnter(collider, _isCompleteTutorial, Define.NextTutorial.Oven);
+            _isCompleteTutorial = true;
+        }
 
-            // 방향 벡터
-            Vector3 dir = _destPos - transform.position;
-            dir.y = 0;
+        // 방향 벡터
+        //Vector3 dir = _destPos - transform.position;
+        Vector3 dir = new Vector3(joy.Horizontal, 0, joy.Vertical);
+        dir.y = 0;
 
-            // 도착시 IDLE
-            if (dir.magnitude < 0.1f)
+        // 도착시 IDLE
+        if (dir.magnitude < 0.1f)
+        {
+            StopMoving();
+        }
+        else
+        {
+            if (_croassantStack.Count > 0)
             {
-                StopMoving();
+                State = Define.State.StackMoving;
             }
             else
             {
-                // 방향 및 속도
-                Vector3 moveDir = dir.normalized * MoveSpeed;
-                _rigidbody.velocity = moveDir;
-
-                // 회전
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+                State = Define.State.Moving;
             }
+
+            // 방향 및 속도
+            Vector3 moveDir = dir.normalized * MoveSpeed;
+            _rigidbody.velocity = moveDir;
+
+            // 회전
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
         }
     }
 
+    #region UPDATE MOVING
+    //protected override void UpdateMoving()
+    //{
+    //    if (_moving)
+    //    {
+
+    //    }
+
+    //    if (!_isCompleteTutorial)
+    //    {
+    //        Collider collider = GetComponent<Collider>();
+    //        GameManager.Instance.Tutorial.HandleTriggerEnter(collider, _isCompleteTutorial, Define.NextTutorial.Oven);
+    //        _isCompleteTutorial = true;
+    //    }
+
+    //    // 방향 벡터
+    //    //Vector3 dir = _destPos - transform.position;
+    //    Vector3 dir = new Vector3(joy.Horizontal, 0, joy.Vertical);
+    //    dir.y = 0;
+
+    //    // 도착시 IDLE
+    //    if (dir.magnitude < 0.1f)
+    //    {
+    //        StopMoving();
+    //    }
+    //    else
+    //    {
+    //        if (_croassantStack.Count > 0)
+    //        {
+    //            State = Define.State.StackMoving;
+    //        }
+    //        else
+    //        {
+    //            State = Define.State.Moving;
+    //        }
+
+    //        // 방향 및 속도
+    //        Vector3 moveDir = dir.normalized * MoveSpeed;
+    //        _rigidbody.velocity = moveDir;
+
+    //        // 회전
+    //        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+    //    }
+
+    //}
+    #endregion
     private void StopMoving()
     {
         _moving = false;
@@ -100,68 +183,86 @@ public class PlayerController : BaseController
         }
     }
 
-    void OnTouchEvent(Define.TouchEvent evt, Vector2 position)
-    {
-        if (evt == Define.TouchEvent.Drag)
-        {
-            // 드래그 시 처리
-            SetDestination(position);
-            _moving = true;
-        }
-        else if (evt == Define.TouchEvent.DragEnd)
-        {
-            // 드래그 종료 시 처리
-            StopMoving();
-        }
-    }
+    //#region TOUCH
+    //void OnTouchEvent(Define.TouchEvent evt, Vector2 position)
+    //{
+    //    if (evt == Define.TouchEvent.Drag)
+    //    {
+    //        // 드래그 시 처리
+    //        SetDestination(position);
+    //        _moving = true;
+    //    }
+    //    else if (evt == Define.TouchEvent.DragEnd)
+    //    {
+    //        // 드래그 종료 시 처리
+    //        StopMoving();
+    //    }
+    //}
+    //#endregion
 
-    void SetDestination(Vector2 touchPosition)
-    {
-        // 터치의 위치
-        Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-        RaycastHit hitInfo;
-        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, 1 << (int)Define.Layer.Ground))
-        {
-            _destPos = hitInfo.point;
-            if(_croassantStack.Count > 0)
-            {
-                State = Define.State.StackMoving;
-            }
-            else
-            {
-                State = Define.State.Moving;
-            }
-            _moving = true;
-        }
-    }
+    //void OnTouchEvent(Define.TouchEvent evt)
+    //{
+    //    if (_croassantStack.Count > 0)
+    //    {
+    //        State = Define.State.StackMoving;
+    //    }
+    //    else
+    //    {
+    //        State = Define.State.Moving;
+    //    }
+    //}
 
-    protected override void UpdateStackMoving()
-    {
-        if (_croassantStack.Count > 0)
-        {
-            if (_moving)
-            {
-                // 방향 벡터
-                Vector3 dir = _destPos - transform.position;
-                dir.y = 0;
+    //#region SET DESTINATION
+    //void SetDestination(Vector2 touchPosition)
+    //{
+    //    // 터치의 위치
+    //    Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+    //    RaycastHit hitInfo;
+    //    if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, 1 << (int)Define.Layer.Ground))
+    //    {
+    //        _destPos = hitInfo.point;
+    //        if(_croassantStack.Count > 0)
+    //        {
+    //            State = Define.State.StackMoving;
+    //        }
+    //        else
+    //        {
+    //            State = Define.State.Moving;
+    //        }
+    //        _moving = true;
+    //    }
+    //}
+    //#endregion
+    //protected override void UpdateStackMoving()
+    //{
+    //    if (_croassantStack.Count > 0)
+    //    {
+    //        if (_moving)
+    //        {
+         
+    //        }
 
-                // 도착시 IDLE
-                if (dir.magnitude < 0.1f)
-                {
-                    StopMoving();
-                }
-                else
-                {
-                    // 방향 및 속도
-                    Vector3 moveDir = dir.normalized * MoveSpeed;
-                    _rigidbody.velocity = moveDir;
+    //        // 방향 벡터
+    //        //Vector3 dir = _destPos - transform.position;
+    //        Vector3 dir = new Vector3(joy.Horizontal, 0, joy.Vertical);
+    //        dir.y = 0;
 
-                    // 회전
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
-                }
-            }
-        }
-    }
+    //        // 도착시 IDLE
+    //        if (dir.magnitude < 0.1f)
+    //        {
+    //            StopMoving();
+    //        }
+    //        else
+    //        {
+    //            // 방향 및 속도
+    //            Vector3 moveDir = dir.normalized * MoveSpeed;
+    //            _rigidbody.velocity = moveDir;
+
+    //            // 회전
+    //            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+    //        }
+    //    }
+    //}
 
     public void SetInIdleTrigger(bool inTrigger)
     {
@@ -175,22 +276,7 @@ public class PlayerController : BaseController
     public void AddToCroassantStack(GameObject croassant)
     {
         _croassantStack.Push(croassant);
-        // UpdateCroassantPositions();
     }
-
-    //private void UpdateCroassantPositions()
-    //{
-        //float heightIncrement = 0.3f;
-        //int count = _croassantStack.Count;
-        //float startY = HandPos.position.y;
-
-        //for (int i = 0; i < count; i++)
-        //{
-        //    GameObject croassant = _croassantStack.ToArray()[i]; 
-        //    Vector3 positionOffset = new Vector3(0, heightIncrement * i, 0);
-        //    croassant.transform.position = HandPos.position + positionOffset;
-        //}
-    //}
 
     public void MaxUISetActive(bool isMax)
     {

@@ -41,7 +41,7 @@ public class SoundManager
     {
         if (audioClip == null)
             return;
-        //GameManager.Instance.Sound.Play("Get_Obj");
+
         if (type == Define.Sound.Bgm)
         {
             AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];

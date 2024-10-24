@@ -21,15 +21,17 @@ public class CashTable : Obj_Base
 
     private GameObject _paperBag;
     private GameObject _money;
+
     private bool _isPlayerInArea = false;
     private bool _isCompleteTutorial = false;
-    private int _price;
+    private bool _isFirstNpcToSit = false;
 
-    private NPCController _currentNPC;
-    private Animator _anim;
+    private int _price;
 
     private Queue<NPCController> _npcQueue = new Queue<NPCController>();
 
+    NPCController _currentNPC;
+    Animator _anim;
     GameObject _player;
     BaseStackMoney _moneyStorageObj;
     PlayerInfo _playerInfo;
@@ -63,7 +65,7 @@ public class CashTable : Obj_Base
         GameManager.Instance.Resource.Destroy(_money);
 
     }
-
+    #region TRIGGER EVENT
     public void OnPlayerEnter(Collider other)
     {
         _isPlayerInArea = true;
@@ -90,15 +92,18 @@ public class CashTable : Obj_Base
         if (newNPC != null && !_npcQueue.Contains(newNPC))
         {
             _npcQueue.Enqueue(newNPC);
+            
         }
+
+
+        if (newNPC.GetCroassantStackCount() > 0 && newNPC.GetCroassantStackCount() % 2 != 0)
+            StartCoroutine(CamActionCo());
 
         ProcessNextNPC();
     }
 
 
-    public void OnNPCStay(Collider other)
-    {
-    }
+    public void OnNPCStay(Collider other){ }
 
     public void OnNPCExit(Collider other)
     {
@@ -120,7 +125,7 @@ public class CashTable : Obj_Base
         GameManager.Instance.Tutorial.HandleTriggerEnter(other, _isCompleteTutorial, Define.NextTutorial.CashPoint);
         _isCompleteTutorial = true;
     }
-
+    #endregion
     // Àç±Í
     private void ProcessNextNPC()
     {
@@ -145,6 +150,7 @@ public class CashTable : Obj_Base
         }
     }
 
+    #region COROUTINE
     private IEnumerator CreatePaperBagAndProcessNPC()
     {
         GameObject go = GameManager.Instance.Resource.Instantiate("World/PaperBag", _paperBagSpawnPoint);
@@ -239,8 +245,18 @@ public class CashTable : Obj_Base
         _currentNPC = null;
     }
 
+    private IEnumerator CamActionCo()
+    {
+        CameraManager.OnChangedCineMachinePriority("Cam_UnLockSit", "Cam_MainCam");
+
+        yield return new WaitForSeconds(2.5f);
+
+        CameraManager.OnChangedCineMachinePriority("Cam_MainCam", "Cam_UnLockSit");
+    }
+    #endregion
     public void OnPaperBagAnimationComplete()
     {
         StartCoroutine(BreadToPaperBagCo());
     }
+
 }

@@ -19,5 +19,4 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
         OnDragHandler?.Invoke(eventData);
     }
 
-
 }

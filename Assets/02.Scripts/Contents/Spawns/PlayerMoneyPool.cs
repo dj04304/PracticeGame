@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMoneyPool : MonoBehaviour
@@ -50,6 +49,7 @@ public class PlayerMoneyPool : MonoBehaviour
         }
     }
 
+    #region SHOOT MONEY COROUTINE
     private IEnumerator SpawnMoneyCoroutine()
     {
         _isSpawning = true;
@@ -80,7 +80,7 @@ public class PlayerMoneyPool : MonoBehaviour
 
         _isSpawning = false; // Reset flag once spawning is complete
     }
-
+    #endregion
 
 }
 

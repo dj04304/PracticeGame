@@ -102,7 +102,7 @@ public class TutorialManager
 
         _currentUnlockIndex = 0;
     }
-
+    #region TUTORIAL TRIGGER
     public void HandleTriggerEnter(Collider other, bool isCompleteTutorial, Define.NextTutorial nextTarget)
     {
         if ((1 << other.gameObject.layer & _mask) != 0)
@@ -164,7 +164,9 @@ public class TutorialManager
             }
         }
     }
+    #endregion
 
+    #region SET NEXT TUTORIAL
     private void SetNextTarget(Define.NextTutorial nextType)
     {
         _currentTargetType = nextType;
@@ -208,7 +210,7 @@ public class TutorialManager
             UpdateTutorialUI(targetCollider);
         }
     }
-
+    #endregion
     private void UpdateTutorialUI(Collider targetCollider)
     {
         if (GuideArrow != null)

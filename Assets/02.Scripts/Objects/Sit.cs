@@ -64,10 +64,10 @@ public class Sit : Obj_Base
         {
             _tableCollider = Table.GetComponent<Collider>();
             
-            // Table의 모든 자식 오브젝트를 저장할 리스트를 만듭니다.
+            // Table 자식 리스트
             List<Transform> trashChildren = new List<Transform>();
 
-            // "Trash" 태그를 가진 자식 오브젝트를 리스트에 추가합니다.
+          // 트래쉬 태그 추가
             foreach (Transform child in Table.transform)
             {
                 if (child.CompareTag("Trash"))

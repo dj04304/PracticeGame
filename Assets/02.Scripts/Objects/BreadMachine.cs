@@ -59,6 +59,7 @@ public class BreadMachine : MonoBehaviour
         GameManager.Instance.Particle.Play("VFX_OvenLight", gameObject.transform, LightPos, Define.Particle.Loop);
     }
 
+    #region COROUTINE
     private IEnumerator CroassantSpawnCo()
     {
         while (_currentCount < _createCount)
@@ -94,22 +95,9 @@ public class BreadMachine : MonoBehaviour
 
         _releaseCroassantCo = null; // 코루틴이 종료되면 변수 초기화
     }
+    #endregion
 
-    private void CreateBread()
-    {
-        if (_currentCount < _createCount)
-        {
-            Poolable pool = GameManager.Instance.Pool.Pop(_croassant);
-            _croassantQueue.Enqueue(pool.gameObject);
-
-            _currentCount++;
-        }
-        else
-        {
-            _canCreateCroassant = false; // 빵을 더 이상 생성할 수 없는 상태로 설정
-        }
-    }
-
+    #region TRIGGER
     private void OnTriggerEnter(Collider other)
     {
         if ((1 << other.gameObject.layer & _mask) != 0)
@@ -148,6 +136,21 @@ public class BreadMachine : MonoBehaviour
                     _releaseCroassantCo = null;
                 }
             }
+        }
+    }
+    #endregion
+    private void CreateBread()
+    {
+        if (_currentCount < _createCount)
+        {
+            Poolable pool = GameManager.Instance.Pool.Pop(_croassant);
+            _croassantQueue.Enqueue(pool.gameObject);
+
+            _currentCount++;
+        }
+        else
+        {
+            _canCreateCroassant = false; // 빵을 더 이상 생성할 수 없는 상태로 설정
         }
     }
 

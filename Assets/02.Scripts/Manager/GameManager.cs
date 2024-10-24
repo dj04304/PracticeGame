@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameManager : SingletonManager<GameManager>
 {
-    private DataManager _data = new DataManager();
+    #region Managers
     private InputManager _input = new InputManager();
     private ObjectManager _object = new ObjectManager();
     private PoolManager _pool;
@@ -16,7 +16,6 @@ public class GameManager : SingletonManager<GameManager>
     private TutorialManager _tutorial = new TutorialManager();
     private GameScene _game;
 
-    public DataManager Data {  get { return _data; } }
     public InputManager Input { get { return _input; } }
     public ObjectManager Object { get { return _object; } }
     public PoolManager Pool { get { return _pool; } }
@@ -29,6 +28,7 @@ public class GameManager : SingletonManager<GameManager>
     public Util Util { get { return _util; } }
     public TutorialManager Tutorial { get { return _tutorial; } }
     public GameScene Game { get { return _game; } }
+    #endregion
 
     protected override void Awake()
     {
@@ -43,7 +43,6 @@ public class GameManager : SingletonManager<GameManager>
 
     private void Init()
     {
-        _data.Init();
         _sound.Init();
         _pool.Init();
         _tutorial.Init();
@@ -61,7 +60,7 @@ public class GameManager : SingletonManager<GameManager>
 
     void Update()
     {
-        _input.OnUpdate();
+        //_input.OnUpdate();
     }
 
     public void Clear() 

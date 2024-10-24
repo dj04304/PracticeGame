@@ -22,6 +22,7 @@ public class Basket : MonoBehaviour
 
     private int _npcNum;
 
+    #region TRIGGER
     private void OnTriggerEnter(Collider other)
     {
         #region Player Enter Trigger
@@ -83,8 +84,9 @@ public class Basket : MonoBehaviour
             }
         }
     }
+    #endregion
 
-
+    #region COROUTINE
     private IEnumerator ProcessBreadToNPCCo(Collider other)
     {
 
@@ -213,4 +215,5 @@ public class Basket : MonoBehaviour
         
 
     }
+    #endregion
 }

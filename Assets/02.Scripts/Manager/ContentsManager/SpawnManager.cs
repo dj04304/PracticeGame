@@ -6,7 +6,6 @@ using UnityEngine;
 public class SpawnManager
 {
     GameObject _player;
-    //Dictionary<int, GameObject> _playerDic = new Dictionary<int, GameObject>();
     HashSet<GameObject> _npc = new HashSet<GameObject>();
     HashSet<GameObject> _handCroassant = new HashSet<GameObject>();
     HashSet<GameObject> _money = new HashSet<GameObject>();

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
@@ -30,6 +29,7 @@ public class BaseProjectile : MonoBehaviour
     protected virtual Transform GetArrivalTarget() { return _arrivalTarget; }
     public bool HasArrived() { return _hasArrived; }
 
+    #region INITIALIZE
     public virtual void Initialize(Vector3 startPosition, Vector3 targetPosition, Transform arrivalTarget, Define.ArriveType arriveType, int stackCount, float duration = 0.1f)
     {
         _duration = duration;
@@ -51,6 +51,7 @@ public class BaseProjectile : MonoBehaviour
         transform.position = _startPosition;
         StartCoroutine(ProjectileCoroutine());
     }
+    #endregion
 
     protected virtual IEnumerator ProjectileCoroutine()
     {
@@ -96,6 +97,7 @@ public class BaseProjectile : MonoBehaviour
         }
     }
 
+    #region ARRIVE TYPE
     private void BagToNPCArrive()
     {
         Transform arrivalTarget = GetArrivalTarget();
@@ -154,4 +156,5 @@ public class BaseProjectile : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         GameManager.Instance.Sound.Play("Put_Object");
     }
+    #endregion
 }

@@ -31,6 +31,16 @@ public class UI_Price : UI_Base
         if (_priceText != null)
             _priceText.text = _price.ToString();
 
+        StartCoroutine(CamActionCo()); 
+    }
+
+    private IEnumerator CamActionCo()
+    {
+        CameraManager.OnChangedCineMachinePriority("Cam_UnlockUI", "Cam_MainCam");
+
+        yield return new WaitForSeconds(2.5f);
+
+        CameraManager.OnChangedCineMachinePriority("Cam_MainCam", "Cam_UnlockUI");
     }
 
 }

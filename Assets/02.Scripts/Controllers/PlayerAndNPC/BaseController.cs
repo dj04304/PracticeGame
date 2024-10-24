@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseController : MonoBehaviour
 {
-    // TODO 추후 옮길수도
     [SerializeField]
     protected float MoveSpeed;
 

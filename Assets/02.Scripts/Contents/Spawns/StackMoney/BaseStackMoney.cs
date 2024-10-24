@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseStackMoney : MonoBehaviour
@@ -50,6 +48,7 @@ public abstract class BaseStackMoney : MonoBehaviour
         }
     }
 
+    #region MONEY COROUTINE
     private IEnumerator SpawnMoneyCoroutine()
     {
         _isSpawning = true;
@@ -107,5 +106,5 @@ public abstract class BaseStackMoney : MonoBehaviour
         _isSpawning = false;
     }
 
-
+    #endregion
 }

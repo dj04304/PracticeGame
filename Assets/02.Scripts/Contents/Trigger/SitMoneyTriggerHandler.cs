@@ -54,6 +54,7 @@ public class SitMoneyTriggerHandler : MonoBehaviour
 
     }
 
+    #region INCOME MONEY
     private IEnumerator MoneyToPlayerCO(Collider playerCollider)
     {
         if (_player == null) yield break;
@@ -104,4 +105,5 @@ public class SitMoneyTriggerHandler : MonoBehaviour
 
 
     }
+    #endregion
 }

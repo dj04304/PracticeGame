@@ -22,6 +22,7 @@ public class SitStackMoney : BaseStackMoney
         }
     }
 
+    #region MONEY COROUTINE
     private IEnumerator SpawnSitMoneyCoroutine()
     {
         _isSpawningSitMoney = true;
@@ -76,4 +77,5 @@ public class SitStackMoney : BaseStackMoney
 
         _isSpawningSitMoney = false;
     }
+    #endregion
 }
